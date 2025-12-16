@@ -19,8 +19,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app = FastAPI(title="Stranger Things: Escape the Upside Down", 
-              description="Multi-dimensional coordination puzzle")
+
 
 # --- In-Memory Storage ---
 teams: Dict[str, dict] = {}
