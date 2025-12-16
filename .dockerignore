@@ -1,12 +1,44 @@
-FROM python:3.9-slim
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
 
-WORKDIR /app
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Environment
+.env
+.env.production
 
-COPY . .
+# Git
+.git/
+.gitignore
 
-EXPOSE 10000
+# Build
+build/
+dist/
+*.egg-info/
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "10000"]
+# Test
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Docker
+Dockerfile
+.dockerignore
+
+# OS
+.DS_Store
+Thumbs.db
