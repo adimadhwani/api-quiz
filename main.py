@@ -63,12 +63,30 @@ class HintRequest(BaseModel):
 @app.post("/create_team")
 async def create_new_team(team: TeamCreate):
     """Create a new team - Stranger Things Edition"""
+    
+    # Normalize the incoming name (lowercase and remove spaces)
+    incoming_name_clean = team.team_name.lower().strip()
+
+    # --- CHANGE START: Check if team name already exists (Case Insensitive) ---
+    for existing_id, existing_data in teams.items():
+        # Compare the lowercase version of the stored name vs incoming name
+        if existing_data['team_name'].lower().strip() == incoming_name_clean:
+            return {
+                "team_id": existing_id,
+                "team_name": existing_data['team_name'], # Return original name
+                "message": f"Team '{team.team_name}' found (matches '{existing_data['team_name']}'). Returning existing ID.",
+                "instructions": f"Share this team_id with both friends: {existing_id}",
+                "story": "Welcome back. The gate is still waiting...",
+                "hint_system": "Use GET /{team_id}/hint when stuck. But use wisely!"
+            }
+    # --- CHANGE END ---
+
     team_id = str(uuid.uuid4())[:8]
     current_time = time.time()
     
     teams[team_id] = {
         'team_id': team_id,
-        'team_name': team.team_name,
+        'team_name': team.team_name, # Store the name exactly as they typed it the first time
         'escaped': False,
         'escape_key': None,
         'start_time': current_time,
